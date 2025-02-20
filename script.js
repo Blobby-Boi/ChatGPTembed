@@ -20,6 +20,10 @@ function createChatGPTpopup() {
     proxyTab.innerText = "Proxy";
     tabContainer.appendChild(proxyTab);
 
+    const toolsTab = document.createElement("button");
+    toolsTab.innerText = "Tools";
+    tabContainer.appendChild(toolsTab);
+
     const closeButton = document.createElement("button");
     closeButton.innerText = "×";
     chatHeader.appendChild(closeButton);
@@ -27,6 +31,50 @@ function createChatGPTpopup() {
     const iframe = document.createElement("iframe");
     iframe.src = "https://www.google.com/webhp?igu=1";
     chatContainer.appendChild(iframe);
+
+    const toolsContainer = document.createElement("div");
+    toolsContainer.style.display = "none";
+    toolsContainer.style.padding = "10px";
+    toolsContainer.style.fontFamily = "Arial, sans-serif";
+    chatContainer.appendChild(toolsContainer);
+
+    const rightClickCheckbox = document.createElement("input");
+    rightClickCheckbox.type = "checkbox";
+    rightClickCheckbox.id = "rightClickToggle";
+
+    const rightClickLabel = document.createElement("label");
+    rightClickLabel.innerText = "Enable Right Clicking";
+    rightClickLabel.style.marginLeft = "5px";
+    rightClickLabel.style.fontFamily = "Arial, sans-serif";
+    rightClickLabel.style.fontSize = "16px";
+    rightClickLabel.setAttribute("for", "rightClickToggle");
+
+    toolsContainer.appendChild(rightClickCheckbox);
+    toolsContainer.appendChild(rightClickLabel);
+
+    const contextMenuHandler = function (event) {
+        event.stopPropagation();
+    };
+
+    function enableRightClick() {
+        document.addEventListener('contextmenu', contextMenuHandler, true);
+        document.oncontextmenu = null;
+        document.body.oncontextmenu = null;
+    }
+
+    function disableRightClick() {
+        document.removeEventListener('contextmenu', contextMenuHandler, true);
+        document.oncontextmenu = (e) => false;
+        document.body.oncontextmenu = (e) => false;
+    }
+
+    rightClickCheckbox.addEventListener("change", function () {
+        if (this.checked) {
+            enableRightClick();
+        } else {
+            disableRightClick();
+        }
+    });
 
     Object.assign(chatContainer.style, {
         position: "fixed",
@@ -78,26 +126,45 @@ function createChatGPTpopup() {
     styleTab(googleTab, true);
     styleTab(chatTab, false);
     styleTab(proxyTab, false);
+    styleTab(toolsTab, false);
 
     googleTab.addEventListener("click", () => {
+        iframe.style.display = "block";
+        toolsContainer.style.display = "none";
         iframe.src = "https://www.google.com/webhp?igu=1";
         styleTab(googleTab, true);
         styleTab(chatTab, false);
         styleTab(proxyTab, false);
+        styleTab(toolsTab, false);
     });
 
     chatTab.addEventListener("click", () => {
+        iframe.style.display = "block";
+        toolsContainer.style.display = "none";
         iframe.src = "https://iframe.interaxai.com/67b66eb8d2fcb363116cb170";
         styleTab(googleTab, false);
         styleTab(chatTab, true);
         styleTab(proxyTab, false);
+        styleTab(toolsTab, false);
     });
     
     proxyTab.addEventListener("click", () => {
+        iframe.style.display = "block";
+        toolsContainer.style.display = "none";
         iframe.src = "https://cartiontop.ostrovsky.sk/";
         styleTab(googleTab, false);
         styleTab(chatTab, false);
         styleTab(proxyTab, true);
+        styleTab(toolsTab, false);
+    });
+
+    toolsTab.addEventListener("click", () => {
+        iframe.style.display = "none";
+        toolsContainer.style.display = "block";
+        styleTab(googleTab, false);
+        styleTab(chatTab, false);
+        styleTab(proxyTab, false);
+        styleTab(toolsTab, true);
     });
 
     Object.assign(closeButton.style, {
