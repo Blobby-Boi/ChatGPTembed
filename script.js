@@ -52,6 +52,42 @@ function createChatGPTpopup() {
     toolsContainer.appendChild(rightClickCheckbox);
     toolsContainer.appendChild(rightClickLabel);
 
+    toolsContainer.appendChild(document.createElement("br"));
+    toolsContainer.appendChild(document.createElement("br"));
+
+    const codeInputLabel = document.createElement("label");
+    codeInputLabel.innerText = "Enter Javascript Code:";
+    codeInputLabel.style.fontSize = "16px";
+    codeInputLabel.style.fontFamily = "Arial, sans-serif";
+    toolsContainer.appendChild(codeInputLabel);
+
+    const codeInput = document.createElement("textarea");
+    codeInput.style.width = "100%";
+    codeInput.style.height = "100px";
+    codeInput.style.resize = "none";
+    toolsContainer.appendChild(codeInput);
+
+    const runCodeButton = document.createElement("button");
+    runCodeButton.innerText = "Execute";
+    toolsContainer.appendChild(runCodeButton);
+
+    const outputArea = document.createElement("pre");
+    outputArea.style.fontFamily = "monospace";
+    outputArea.style.background = "#f5f5f5";
+    outputArea.style.padding = "10px";
+    outputArea.style.marginTop = "10px";
+    toolsContainer.appendChild(outputArea);
+
+    runCodeButton.addEventListener("click", () => {
+        const code = codeInput.value;
+        try {
+            const result = eval(code);
+            outputArea.textContent = result;
+        } catch (error) {
+            outputArea.textContent = `Error: ${error.message}`;
+        }
+    });
+
     const contextMenuHandler = function (event) {
         event.stopPropagation();
     };
